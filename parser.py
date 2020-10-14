@@ -27,14 +27,20 @@ def place_board(md, board, board_number=None, last_move=None, caption=None):
             caption += "まで"
         else:
             caption += "初期局面"
+    
+    last = str()
+    last += '手数＝' + str(board.move_number - 1) + '　'
+    if board.move_number != 1:
+        last += '▲△'[board.move_number % 2] + last_move[1:] + '　まで'
 
     html = [
         '<figure class="zumen">',
         '<figcaption>' + caption + '</figcaption>',
         '<pre class="shogizumen">',
         board.kif_str(),
+        last,
         '</pre>',
-        '</figure>'
+        '</figure><br>'
     ]
     md.extend(html)
     return
@@ -101,8 +107,9 @@ def kif_to_md(path):
         md.append(detail)
         # moves
         for i in range(0, len(last_moves), 4):
-            moves = '　'.join(last_moves[i:min(i+4, len(last_moves))])
+            moves = ''.join(last_moves[i:min(i+4, len(last_moves))])
             md.append(colored_red(moves) + '\n')
+        md.append(bold("（第" + str(board_number) + "図）"))
         # board
         board_push(caption if len(caption) > 0 else None)
         # comment
