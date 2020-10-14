@@ -40,12 +40,12 @@ def place_board(md, board, board_number=None, last_move=None, caption=None):
     return
 
 
-def colored_red(s):
-    return '<span style ="color: red">**' + s + '**</span>'
-
-
 def bold(s):
-    return "**" + s + "**"
+    return "<b>" + s + "</b>"
+
+
+def colored_red(s):
+    return '<span style ="color: red">' + bold(s) + '</span>'
 
 
 def kif_to_md(path):
@@ -127,7 +127,8 @@ def kif_to_md(path):
             # move board
             board.push_usi(kif['moves'][move_number - 1])
             # push moves
-            last_moves.append(lst[1])
+            move = '☖☗'[move_number % 2] + lst[1].rstrip('123456789()')
+            last_moves.append(move)
             move_number += 1
         elif lst[0][0] == '*':
             if lst[0] == '*cap':
